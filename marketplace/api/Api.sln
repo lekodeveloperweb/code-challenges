@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32414.318
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Marketplace.Api", "Marketplace.Api\Marketplace.Api.csproj", "{5605304E-5B24-4591-ADF9-DF4036CBF243}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Marketplace.Tests", "Marketplace.Tests\Marketplace.Tests.csproj", "{A88F41D6-4C83-4534-BAD0-A5FC547436D3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5605304E-5B24-4591-ADF9-DF4036CBF243}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5605304E-5B24-4591-ADF9-DF4036CBF243}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5605304E-5B24-4591-ADF9-DF4036CBF243}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5605304E-5B24-4591-ADF9-DF4036CBF243}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A88F41D6-4C83-4534-BAD0-A5FC547436D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A88F41D6-4C83-4534-BAD0-A5FC547436D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A88F41D6-4C83-4534-BAD0-A5FC547436D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A88F41D6-4C83-4534-BAD0-A5FC547436D3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D961D2EF-A7B5-4CC1-A583-4417254BF1BF}
+	EndGlobalSection
+EndGlobal
