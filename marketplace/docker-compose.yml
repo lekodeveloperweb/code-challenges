@@ -3,29 +3,26 @@ version: "3.6"
 services:
   marketplace-api:
     build:
-      context: .
-      dockerfile: api/Dockerfile
+      context: ./api
+      dockerfile: Dockerfile
     container_name: api
     environment:
-      - "DatabaseSettings__ConnectionString=Server=ua-db;Database=master;\
-        User=sa;Password=123@Change;MultipleActiveResultSets=true"
-      - "DatabaseSettings__DBProvider=mssql"
-      - "ASPNETCORE_URLS=https://+:80;http://+:443"
+      - DatabaseSettings__ConnectionString=Server=marketplace-db;Database=master;User=sa;Password=123@Change;MultipleActiveResultSets=true
+      - DatabaseSettings__DBProvider=mssql
+      - ASPNETCORE_URLS=http://+:80
       - CORS_ORIGIN=http://localhost:3000
-    volumes:
-      - ~/.aspnet/https:/https:ro
+      - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "5051:5051"
-      - "5061:5061"
+      - "80:80"
     depends_on:
       marketplace-db:
         condition: service_healthy
     restart: on-failure
     networks:
-      - marketplace_network
+      - marketplace
 
   marketplace-db:
-    image: "mcr.microsoft.com/mssql/server"
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
     environment:
       - "SA_PASSWORD=123@Change"
       - "ACCEPT_EULA=Y"
@@ -40,6 +37,6 @@ services:
       retries: 10
       start_period: 10s
     networks:
-      - marketplace_network
+      - marketplace
 networks:
-  marketplace_network:
+  marketplace:
