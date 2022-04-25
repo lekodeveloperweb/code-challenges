@@ -1,0 +1,45 @@
+version: "3.6"
+
+services:
+  marketplace-api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    container_name: api
+    environment:
+      - "DatabaseSettings__ConnectionString=Server=ua-db;Database=master;\
+        User=sa;Password=123@Change;MultipleActiveResultSets=true"
+      - "DatabaseSettings__DBProvider=mssql"
+      - "ASPNETCORE_URLS=https://+:80;http://+:443"
+      - CORS_ORIGIN=http://localhost:3000
+    volumes:
+      - ~/.aspnet/https:/https:ro
+    ports:
+      - "5051:5051"
+      - "5061:5061"
+    depends_on:
+      marketplace-db:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - marketplace_network
+
+  marketplace-db:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+      - "SA_PASSWORD=123@Change"
+      - "ACCEPT_EULA=Y"
+    container_name: mssql
+    ports:
+      - 1433:1433
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$$SA_PASSWORD" -Q
+        "SELECT 1" || exit 1
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+    networks:
+      - marketplace_network
+networks:
+  marketplace_network:

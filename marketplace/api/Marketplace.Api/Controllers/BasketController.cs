@@ -60,7 +60,7 @@ namespace Marketplace.Api.Controllers
             try
             {
                 var basket = await _service.GetCurrent();
-                var product = basket.BasketInfo.FirstOrDefault(x => x.Id == productId);
+                var product = basket.BasketInfo.FirstOrDefault(x => x.ProductId == productId);
                 if (product is null)
                 {
                     return NotFound();
