@@ -15,7 +15,7 @@ namespace Marketplace.Api.Model
         [Column("description", TypeName = "nvarchar(255)")]
         public string Description { get; set; }
         [Column("product_size")]
-        public ProducSize? Size { get; set; }
+        public ProductSize? Size { get; set; }
         [Column("price", TypeName = "decimal(18,2)")]
         [Required(ErrorMessage = "Property price is required")]
         public decimal Price { get; set; }
