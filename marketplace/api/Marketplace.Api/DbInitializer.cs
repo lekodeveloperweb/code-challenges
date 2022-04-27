@@ -2,15 +2,15 @@
 
 namespace Marketplace.Api
 {
-    public static class DbInitializer
-    {
-        public static List<Product> products = new List<Product>()
+  public static class DbInitializer
+  {
+    public static List<Product> products = new List<Product>()
         {
             new Product {
                 Id = Guid.NewGuid(),
                 Name = "Cotten T-Shirt",
                 Price = 10.99M,
-                Size = ProducSize.Small,
+                Size = ProductSize.Small,
                 SKU = "AWDT0001-S",
                 Description = "Women′ S Cotton Fabric Plain T-Shirts with Short Sleeve",
                 StockLevel = 10,
@@ -20,7 +20,7 @@ namespace Marketplace.Api
                 Id = Guid.NewGuid(),
                 Name = "Cotten T-Shirt",
                 Price = 10.99M,
-                Size = ProducSize.Medium,
+                Size = ProductSize.Medium,
                 SKU = "AWDT0001-M",
                 StockLevel = 50,
                 Description = "Male Promotional Pure Cotton T Shirt - 100% Cotton",
@@ -30,7 +30,7 @@ namespace Marketplace.Api
                 Id = Guid.NewGuid(),
                 Name = "Cotten T-Shirt",
                 Price = 10.99M,
-                Size = ProducSize.Large,
+                Size = ProductSize.Large,
                 SKU = "AWDT0001-L",
                 StockLevel = 0,
                 Description = "Custom Gildan 100% Cotton T-shirt - Design Short Sleeve T-shirts",
@@ -41,7 +41,7 @@ namespace Marketplace.Api
                 Name = "Baseball cap",
                 Price = 5.99M,
                 SKU = "AWDT0002",
-                Size = ProducSize.OneSize,
+                Size = ProductSize.OneSize,
                 StockLevel = 7,
                 Description = "Baseball Cap Stock Photos, Pictures & Royalty-Free Images",
                 ImageUrl="https://media.istockphoto.com/vectors/set-of-color-illustrations-with-a-blue-denim-baseball-cap-isolated-vector-id1155410370?k=20&m=1155410370&s=612x612&w=0&h=xSWK4Uly0J38XWDw6jxcJs8rvF_AfSKLosF2SZrY4Gk="
@@ -56,26 +56,26 @@ namespace Marketplace.Api
                 ImageUrl = "https://cf.shopee.ph/file/c35dd3fdb6588770c7da8e19a84729cc"
             },
         };
-        public static readonly Basket basket = new()
-        {
-            Id = Guid.NewGuid(),
-            BasketInfo = products.Take(3).ToList().Select(p => new BasketInfo
-            {
-                Id = Guid.NewGuid(),
-                Product = p,
-                ProductId = p.Id,
-                Quantity = 1
-            }).ToList(),
-        };
-        public static void Initialize(ApplicationDBContext context)
-        {
-            if (context.Products.Count() > 0) return;
+    public static readonly Basket basket = new()
+    {
+      Id = Guid.NewGuid(),
+      BasketInfo = products.Take(3).ToList().Select(p => new BasketInfo
+      {
+        Id = Guid.NewGuid(),
+        Product = p,
+        ProductId = p.Id,
+        Quantity = 1
+      }).ToList(),
+    };
+    public static void Initialize(ApplicationDBContext context)
+    {
+      if (context.Products.Count() > 0) return;
 
-            context.Products.AddRange(products);
-            context.SaveChanges();
+      context.Products.AddRange(products);
+      context.SaveChanges();
 
-            context.Baskets.Add(basket);
-            context.SaveChanges();
-        }
+      context.Baskets.Add(basket);
+      context.SaveChanges();
     }
+  }
 }

@@ -16,9 +16,9 @@
       "environmentVariables": {
         "CORS_ORIGIN": "http://localhost:3000",
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DatabaseSettings__ConnectionString": "Server=localhost,1433;Database=master;User=sa;Password=123@Mudar;MultipleActiveResultSets=true"
+        "DatabaseSettings__ConnectionString": "Server=localhost,1433;Database=master;User=sa;Password=123@Change;MultipleActiveResultSets=true"
       },
-      "applicationUrl": "https://localhost:443;http://localhost",
+      "applicationUrl": "http://localhost:8080",
       "dotnetRunMessages": true
     },
     "IIS Express": {
