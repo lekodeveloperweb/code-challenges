@@ -22,7 +22,6 @@ export interface BasketState extends IReduxThunkProcessingState<Basket> {
 
 const initialStateEntity: Basket = {
   id: "",
-  total: 0,
   basketInfo: [],
 }
 
@@ -122,7 +121,6 @@ export const basketSlice = createSlice({
         state.processingError = action.error
       })
       .addCase(deleteProductBasket.fulfilled, (state, action) => {
-        debugger
         state.processingState = "fulfilled"
         state.entity.basketInfo = state.entity.basketInfo.filter(
           (x) => x.productId !== action.meta.arg.toString()

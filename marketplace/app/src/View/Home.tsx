@@ -1,4 +1,5 @@
 import React from "react"
+import { useNavigate } from "react-router-dom"
 import bgMobileImage from "../assets/images/hero-bg-mobile.png"
 import bgImage from "../assets/images/hero-bg.png"
 import mountain from "../assets/images/mountain-bg.png"
@@ -10,6 +11,8 @@ const Home = () => {
     ["heroMobile", "hero"],
     "heroMobile"
   )
+  const navigate = useNavigate()
+
   return (
     <div>
       <div className="flex w-full flex-col">
@@ -36,7 +39,10 @@ const Home = () => {
             Apps is an innovation and experience design agency. We exist to
             create a better future with you.
           </p>
-          <button className="h-10 w-28 rounded bg-accent text-xs font-extralight uppercase text-white shadow-md shadow-gray-400">
+          <button
+            onClick={() => navigate("/products")}
+            className="h-10 w-28 rounded bg-accent text-xs font-extralight uppercase text-white shadow-md shadow-gray-400"
+          >
             Products
           </button>
         </div>
@@ -49,7 +55,10 @@ const Home = () => {
               We architect, design and deliver iconic experiences, services and
               products that improve people’s lives.
             </p>
-            <button className="ml-5 mb-20 h-10 w-28 rounded bg-accent text-xs font-extralight uppercase text-white shadow-md shadow-gray-400 sm:mb-0 sm:ml-20">
+            <button
+              onClick={() => navigate("/news")}
+              className="ml-5 mb-20 h-10 w-28 rounded bg-accent text-xs font-extralight uppercase text-white shadow-md shadow-gray-400 sm:mb-0 sm:ml-20"
+            >
               Read Latest
             </button>
           </div>

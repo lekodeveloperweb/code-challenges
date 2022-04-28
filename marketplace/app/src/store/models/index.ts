@@ -32,6 +32,5 @@ export interface BasketViewModel {
 
 export interface Basket {
   id: string
-  total: number
   basketInfo: BasketInfo[]
 }

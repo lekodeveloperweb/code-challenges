@@ -18,6 +18,17 @@ const Basket = () => {
   const processing = useAppSelector(selectBasketsProcessingState)
 
   const updateBasket = (productId: string, quantity: number) => {
+    const basketInfo = state.basketInfo.find((x) => x.productId === productId)
+    if (basketInfo && basketInfo.product) {
+      if (basketInfo.product.stockLevel < quantity) {
+        return dispatch(
+          applicationActions.showToast({
+            type: "WARNING",
+            message: "Without stock!",
+          })
+        )
+      }
+    }
     dispatch(addItemBasket({ productId, quantity })).then(({ payload }) => {
       if (payload) {
         dispatch(
@@ -32,7 +43,7 @@ const Basket = () => {
 
   const removeItem = (productId: string) => {
     dispatch(deleteProductBasket(productId)).then(({ payload }) => {
-      if (payload) {
+      if (payload && !(payload as any).error) {
         dispatch(
           applicationActions.showToast({
             type: "SUCCESS",
@@ -62,7 +73,7 @@ const Basket = () => {
       {processing !== "pending" && !state?.basketInfo?.length && (
         <div className="mt-2">Card empty</div>
       )}
-      {state?.basketInfo?.map(({ product, total, quantity }) => {
+      {state?.basketInfo?.map(({ product, total, quantity }, index) => {
         return (
           <div key={product?.id} className="mt-10 flex h-1/4 w-full flex-col">
             <h1>
@@ -102,7 +113,7 @@ const Basket = () => {
             </div>
             <div className="flex w-full items-center justify-between py-2">
               <span className="font-normal">Cost</span>
-              <span className="font-thin">£{total}</span>
+              <span className="font-thin">£{total.toFixed(2)}</span>
             </div>
             <div className="flex w-full items-center justify-between py-2">
               <span className="font-normal">Remove</span>
@@ -110,6 +121,20 @@ const Basket = () => {
                 <TrashIcon />
               </button>
             </div>
+            {index === state.basketInfo.length - 1 && (
+              <>
+                <hr className="mt-2" />
+                <div className="mt-2 flex h-10 w-full justify-between">
+                  <h3>Total</h3>
+                  <span>
+                    £
+                    {state.basketInfo
+                      .reduce((p, c) => p + c.total, 0)
+                      .toFixed(2)}
+                  </span>
+                </div>
+              </>
+            )}
           </div>
         )
       })}
