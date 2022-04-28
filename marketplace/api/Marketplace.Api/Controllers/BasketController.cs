@@ -23,7 +23,7 @@ namespace Marketplace.Api.Controllers
     {
       try
       {
-        var basket = await _service.GetCurrent();
+        var basket = await _service.GetCurrentAsync();
         return Ok(basket);
       }
       catch (Exception ex)
@@ -45,7 +45,7 @@ namespace Marketplace.Api.Controllers
         {
           return BadRequest(ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage);
         }
-        var response = await _service.UpdateBasket(basket);
+        var response = await _service.UpdateBasketAsync(basket);
         return Ok(response);
       }
       catch (Exception ex)
@@ -59,11 +59,11 @@ namespace Marketplace.Api.Controllers
     {
       try
       {
-        var basket = await _service.GetCurrent();
+        var basket = await _service.GetCurrentAsync();
         var product = basket.BasketInfo.FirstOrDefault(x => x.ProductId == productId);
         if (product is null)
           return NotFound();
-        _service.ClearProduct(basket.Id, productId);
+        await _service.ClearProductsAsync(basket.Id, productId);
         return NoContent();
       }
       catch (Exception ex)

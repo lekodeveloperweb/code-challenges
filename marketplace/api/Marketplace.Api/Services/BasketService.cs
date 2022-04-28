@@ -17,52 +17,26 @@ namespace Marketplace.Api.Services
       _productRepository = productRepository;
     }
 
-    public bool RemoveProduct(Guid basketId, Guid productId, int quantity)
+    public async Task<bool> RemoveProductAsync(Guid basketId, Guid productId, int quantity)
     {
-      _repository.RemoveProduct(basketId, productId, quantity);
+      await _repository.RemoveProductAsync(basketId, productId, quantity);
       return true;
     }
 
-    public async Task<Basket> UpdateBasket(BasketViewModel basket)
+    public async Task<Basket> UpdateBasketAsync(BasketViewModel basket)
     {
-      var current = await GetCurrent();
+      var current = await GetCurrentAsync();
       var product = await _productRepository.GetByCondition(x => x.Id == basket.ProductId).FirstOrDefaultAsync();
       if (product == null) return null;
       var hasProduct = current.BasketInfo.FirstOrDefault(x => x.ProductId == basket.ProductId);
       if (hasProduct is null)
-        _repository.AddNewProduct(current.Id, product);
+        await _repository.AddNewProductAsync(current.Id, product);
       else
-        _repository.AddProduct(current.Id, product.Id, basket.Quantity);
-      return await GetCurrent();
+        await _repository.AddProductAsync(current.Id, product.Id, basket.Quantity);
+      return await GetCurrentAsync();
     }
 
-    public Task<bool> Delete(Guid id)
-    {
-      throw new NotImplementedException();
-    }
-
-    public Task<List<Basket>> GetAll()
-    {
-      throw new NotImplementedException();
-    }
-
-    public Task<Basket> GetById(Guid id)
-    {
-      throw new NotImplementedException();
-    }
-
-    public Task<Basket> Save(Basket entity)
-    {
-      throw new NotImplementedException();
-    }
-
-    public Task<Basket> Update(Basket entity)
-    {
-      throw new NotImplementedException();
-    }
-
-
-    public async Task<Basket> GetCurrent()
+    public async Task<Basket> GetCurrentAsync()
     {
       var basketInfo = await _repository.GetAll().Include(x => x.BasketInfo).FirstOrDefaultAsync();
       var productIds = basketInfo.BasketInfo.Select(x => x.ProductId).ToList();
@@ -74,9 +48,9 @@ namespace Marketplace.Api.Services
       return basketInfo;
     }
 
-    public bool ClearProduct(Guid basketId, Guid productId)
+    public async Task<bool> ClearProductsAsync(Guid basketId, Guid productId)
     {
-      _repository.ClearProduct(basketId, productId);
+      await _repository.ClearProductsAsync(basketId, productId);
       return true;
     }
   }

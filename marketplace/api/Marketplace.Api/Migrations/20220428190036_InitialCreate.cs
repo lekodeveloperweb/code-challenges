@@ -13,8 +13,7 @@ namespace Marketplace.Api.Migrations
                 name: "Basket",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    total = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {

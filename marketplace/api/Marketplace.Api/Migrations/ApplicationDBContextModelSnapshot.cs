@@ -29,10 +29,6 @@ namespace Marketplace.Api.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)")
-                        .HasColumnName("total");
-
                     b.HasKey("Id");
 
                     b.ToTable("Basket");

@@ -12,7 +12,6 @@ namespace Marketplace.Api
 
     public DbSet<Product> Products { get; set; }
     public DbSet<Basket> Baskets { get; set; }
-    public DbSet<BasketInfo> BasketInfos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

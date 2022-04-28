@@ -3,11 +3,11 @@ using Marketplace.Api.ViewModel;
 
 namespace Marketplace.Api.Contracts
 {
-  public interface IBasketService : IBaseService<Basket>
+  public interface IBasketService
   {
-    Task<Basket> GetCurrent();
-    Task<Basket> UpdateBasket(BasketViewModel basket);
-    bool RemoveProduct(Guid basketId, Guid productId, int quantity);
-    bool ClearProduct(Guid basketId, Guid productId);
+    Task<Basket> GetCurrentAsync();
+    Task<Basket> UpdateBasketAsync(BasketViewModel basket);
+    Task<bool> RemoveProductAsync(Guid basketId, Guid productId, int quantity);
+    Task<bool> ClearProductsAsync(Guid basketId, Guid productId);
   }
 }
