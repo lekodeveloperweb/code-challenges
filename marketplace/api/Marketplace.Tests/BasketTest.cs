@@ -26,7 +26,6 @@ namespace Marketplace.Tests
         var product = ProductData.Products.First(x => x.Id == b.ProductId);
         BasketData.basket.BasketInfo.Add(new BasketInfo
         {
-          Id = Guid.NewGuid(),
           Product = product,
           ProductId = product.Id,
           Quantity = 1,
@@ -35,12 +34,11 @@ namespace Marketplace.Tests
         BasketData.basket.Total = BasketData.basket.BasketInfo.Sum(x => x.Total);
         return BasketData.basket;
       });
-      mock.Setup(x => x.RemoveProduct(It.IsAny<Guid>())).ReturnsAsync((Guid productId) =>
+      mock.Setup(x => x.RemoveProduct(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<int>())).Returns((Guid basketId, Guid productId, int quantity) =>
       {
         if (BasketData.basket.Total == 0) return true;
         var products = ProductData.Products.Where(x => x.Id != productId).Select(p => new BasketInfo
         {
-          Id = Guid.NewGuid(),
           Product = p,
           ProductId = p.Id,
           Quantity = 1,
