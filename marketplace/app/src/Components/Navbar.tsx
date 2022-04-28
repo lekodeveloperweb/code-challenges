@@ -1,16 +1,26 @@
 import React, { useState } from "react"
 import { NavLink } from "react-router-dom"
+import { features, hooks } from "../store"
 import { BasketIcon, MenuIcon } from "./icons"
 import Menu from "./Menu"
 
 const Navbar = () => {
+  const { selectBasket } = features
+  const { useAppSelector } = hooks
+  const basket = useAppSelector(selectBasket)
   const [state, setState] = useState<{
     openMenu: boolean
     showMobileMenu?: boolean
     menuItems: any[]
   }>({
     openMenu: false,
-    menuItems: [{ icon: <BasketIcon />, path: "/cart" }],
+    menuItems: [
+      {
+        icon: <BasketIcon />,
+        hasBadge: true,
+        path: "/cart",
+      },
+    ],
   })
 
   return (
@@ -28,6 +38,7 @@ const Navbar = () => {
       <Menu
         items={state.menuItems}
         mergeNewItems
+        showBadge={basket?.basketInfo?.length > 0}
         className="hidden space-x-7 text-sm sm:flex"
       />
       {state.openMenu && (
@@ -39,6 +50,7 @@ const Navbar = () => {
           <Menu
             items={state.menuItems}
             mergeNewItems
+            showBadge={basket?.basketInfo?.length > 0}
             onClick={() => setState({ ...state, openMenu: !state.openMenu })}
             className="absolute right-2 top-2 z-10 flex-col space-y-6 rounded bg-white px-6 py-6 text-xs"
           />

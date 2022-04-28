@@ -13,11 +13,11 @@ namespace Marketplace.Api.Repositories
 
     public void AddNewProduct(Guid basketId, Product product)
     {
-      _context.BasketInfos.Add(new BasketInfo
+      _context.Set<BasketInfo>().Add(new BasketInfo
       {
         BasketId = basketId,
         ProductId = product.Id,
-        Product = product
+        Total = product.Price,
       });
       _context.SaveChanges();
     }
