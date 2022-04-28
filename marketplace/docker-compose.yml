@@ -9,11 +9,11 @@ services:
     environment:
       - DatabaseSettings__ConnectionString=Server=marketplace-db;Database=master;User=sa;Password=123@Change;MultipleActiveResultSets=true
       - DatabaseSettings__DBProvider=mssql
-      - ASPNETCORE_URLS=http://+:80
-      - CORS_ORIGIN=http://localhost:3000
+      - ASPNETCORE_URLS=http://+:8080
+      - CORS_ORIGIN=http://marketplace-spa,http://localhost
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "80:80"
+      - "8080:8080"
     depends_on:
       marketplace-db:
         condition: service_healthy
@@ -38,5 +38,19 @@ services:
       start_period: 10s
     networks:
       - marketplace
+  marketplace-spa:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args:
+        - API_URL_BASE=http://localhost:8080
+    container_name: app
+    ports:
+      - 80:80
+    networks:
+      - marketplace
+    depends_on:
+      - marketplace-api
+
 networks:
   marketplace:

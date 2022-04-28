@@ -20,8 +20,8 @@ namespace Marketplace.Tests
     public BasketTest()
     {
       var mock = new Mock<IBasketService>();
-      mock.Setup(x => x.GetCurrent()).ReturnsAsync(BasketData.basket);
-      mock.Setup(x => x.UpdateBasket(It.IsAny<BasketViewModel>())).ReturnsAsync((BasketViewModel b) =>
+      mock.Setup(x => x.GetCurrentAsync()).ReturnsAsync(BasketData.basket);
+      mock.Setup(x => x.UpdateBasketAsync(It.IsAny<BasketViewModel>())).ReturnsAsync((BasketViewModel b) =>
       {
         var product = ProductData.Products.First(x => x.Id == b.ProductId);
         BasketData.basket.BasketInfo.Add(new BasketInfo
@@ -31,12 +31,11 @@ namespace Marketplace.Tests
           Quantity = 1,
           Total = product.Price
         });
-        BasketData.basket.Total = BasketData.basket.BasketInfo.Sum(x => x.Total);
         return BasketData.basket;
       });
-      mock.Setup(x => x.RemoveProduct(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<int>())).Returns((Guid basketId, Guid productId, int quantity) =>
+      mock.Setup(x => x.RemoveProductAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<int>())).ReturnsAsync((Guid basketId, Guid productId, int quantity) =>
       {
-        if (BasketData.basket.Total == 0) return true;
+        if (BasketData.basket.BasketInfo.Count() == 0) return true;
         var products = ProductData.Products.Where(x => x.Id != productId).Select(p => new BasketInfo
         {
           Product = p,
@@ -65,7 +64,7 @@ namespace Marketplace.Tests
     public async Task GetCurrent_WhenOccureError_ReturnsErrorMessage()
     {
       var mock = new Mock<IBasketService>();
-      mock.Setup(x => x.GetCurrent()).Throws(new Exception("Error"));
+      mock.Setup(x => x.GetCurrentAsync()).Throws(new Exception("Error"));
       _service = mock.Object;
       _controller = new BasketController(_service);
       var statusCodeResult = await _controller.GetActualStatus() as ObjectResult;
@@ -88,8 +87,7 @@ namespace Marketplace.Tests
 
       Assert.IsType<OkObjectResult>(okResult);
       Assert.IsType<Basket>(basket);
-      Assert.True(BasketData.basket.Total == basket?.Total);
-      Assert.True(BasketData.basket.Total == 43.96M);
+      Assert.True(BasketData.basket.BasketInfo.Sum(x => x.Total) == 43.96M);
     }
 
     [Fact]

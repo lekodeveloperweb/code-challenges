@@ -1,6 +1,7 @@
 import axios, { AxiosInstance } from "axios"
 
-axios.defaults.baseURL = import.meta.env.VITE_API_URL_BASE as string
+axios.defaults.baseURL =
+  (import.meta.env.VITE_API_URL_BASE as string) || "http://localhost:8080"
 
 export type MethodsAllowed =
   | "get"
@@ -30,7 +31,9 @@ export abstract class ServiceBase<T> {
   protected service: Pick<AxiosInstance, MethodsAllowed>
   constructor(
     path: string,
-    baseURL = `${import.meta.env.VITE_API_URL_BASE as string}/api/marketplace`
+    baseURL = `${
+      (import.meta.env.VITE_API_URL_BASE as string) || "http://localhost:8080"
+    }/api/marketplace`
   ) {
     this.service = getServiceInstance(`${baseURL}${path}`)
   }

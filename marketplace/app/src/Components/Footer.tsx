@@ -1,10 +1,13 @@
 import React from "react"
+import { NavLink } from "react-router-dom"
 import Menu from "./Menu"
 
 const Footer = () => {
   return (
     <div className="mt-6 flex w-full flex-col items-start py-4 px-6 sm:flex-row sm:items-center sm:space-x-8">
-      <h1 className="text-2xl font-semibold">APPS</h1>
+      <NavLink to="/" className="text-2xl font-semibold">
+        APPS
+      </NavLink>
       <Menu
         className="flex flex-col"
         itemsClassName="py-4 sm:p-2 text-black/80"
