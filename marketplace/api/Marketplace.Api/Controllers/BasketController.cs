@@ -54,7 +54,7 @@ namespace Marketplace.Api.Controllers
       }
     }
 
-    [HttpDelete("{id:Guid}")]
+    [HttpDelete("{productId:guid}")]
     public async Task<IActionResult> RemoveProduct(Guid productId)
     {
       try
@@ -62,10 +62,8 @@ namespace Marketplace.Api.Controllers
         var basket = await _service.GetCurrent();
         var product = basket.BasketInfo.FirstOrDefault(x => x.ProductId == productId);
         if (product is null)
-        {
           return NotFound();
-        }
-        await _service.RemoveProduct(productId);
+        _service.ClearProduct(basket.Id, productId);
         return NoContent();
       }
       catch (Exception ex)

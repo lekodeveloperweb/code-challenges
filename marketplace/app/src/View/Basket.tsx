@@ -44,10 +44,7 @@ const Basket = () => {
   }
 
   useEffect(() => {
-    debugger
-    if (processing !== "pending") {
-      dispatch(fetchBasket())
-    }
+    dispatch(fetchBasket())
   }, [])
 
   return (
@@ -59,6 +56,12 @@ const Basket = () => {
           quantities or remove items before continuing purchase.
         </p>
       </div>
+      {processing === "pending" && (
+        <div className="mt-2 animate-pulse">Loading...</div>
+      )}
+      {processing !== "pending" && !state?.basketInfo?.length && (
+        <div className="mt-2">Card empty</div>
+      )}
       {state?.basketInfo?.map(({ product, total, quantity }) => {
         return (
           <div key={product?.id} className="mt-10 flex h-1/4 w-full flex-col">
@@ -76,8 +79,8 @@ const Basket = () => {
                 <button
                   className="flex w-1/3 items-center justify-center text-accent"
                   onClick={() => {
-                    if (quantity === 0) {
-                      return
+                    if (quantity === 1) {
+                      return removeItem(product?.id as string)
                     }
                     updateBasket(product?.id as string, quantity - 1)
                   }}
@@ -99,7 +102,7 @@ const Basket = () => {
             </div>
             <div className="flex w-full items-center justify-between py-2">
               <span className="font-normal">Cost</span>
-              <span className="font-thin">{total}</span>
+              <span className="font-thin">£{total}</span>
             </div>
             <div className="flex w-full items-center justify-between py-2">
               <span className="font-normal">Remove</span>

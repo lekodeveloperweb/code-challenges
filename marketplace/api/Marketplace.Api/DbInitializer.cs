@@ -61,7 +61,6 @@ namespace Marketplace.Api
       Id = Guid.NewGuid(),
       BasketInfo = products.Take(3).ToList().Select(p => new BasketInfo
       {
-        Id = Guid.NewGuid(),
         Product = p,
         ProductId = p.Id,
         Quantity = 1

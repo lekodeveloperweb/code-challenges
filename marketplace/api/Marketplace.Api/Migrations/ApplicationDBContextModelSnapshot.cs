@@ -40,13 +40,9 @@ namespace Marketplace.Api.Migrations
 
             modelBuilder.Entity("Marketplace.Api.Model.BasketInfo", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("BasketId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<Guid?>("BasketId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnName("basket_id");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier")
@@ -60,13 +56,11 @@ namespace Marketplace.Api.Migrations
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("total");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("BasketId");
+                    b.HasKey("BasketId", "ProductId");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("basket_info");
+                    b.ToTable("BasketInfo");
                 });
 
             modelBuilder.Entity("Marketplace.Api.Model.Product", b =>
@@ -115,7 +109,9 @@ namespace Marketplace.Api.Migrations
                 {
                     b.HasOne("Marketplace.Api.Model.Basket", null)
                         .WithMany("BasketInfo")
-                        .HasForeignKey("BasketId");
+                        .HasForeignKey("BasketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Marketplace.Api.Model.Product", "Product")
                         .WithMany()

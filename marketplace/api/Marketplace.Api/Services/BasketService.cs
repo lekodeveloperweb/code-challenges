@@ -9,44 +9,31 @@ namespace Marketplace.Api.Services
   public class BasketService : IBasketService
   {
     private readonly IBasketRepository _repository;
-    private readonly IProductRepository _productRespository;
+    private readonly IProductRepository _productRepository;
 
-    public BasketService(IBasketRepository repository, IProductRepository productRespository)
+    public BasketService(IBasketRepository repository, IProductRepository productRepository)
     {
       _repository = repository;
-      _productRespository = productRespository;
+      _productRepository = productRepository;
     }
 
-    public async Task<bool> RemoveProduct(Guid productId)
+    public bool RemoveProduct(Guid basketId, Guid productId, int quantity)
     {
-      var current = await GetCurrent();
-      if (current.Total == 0) return true;
-      current.Total -= 1;
-      var product = current.BasketInfo.FirstOrDefault(x => x.Id == productId);
-      current.BasketInfo.Remove(product);
-      _repository.Update(current);
-      _repository.Save();
+      _repository.RemoveProduct(basketId, productId, quantity);
       return true;
     }
 
     public async Task<Basket> UpdateBasket(BasketViewModel basket)
     {
       var current = await GetCurrent();
-      var product = await _productRespository.GetByCondition(x => x.Id == basket.ProductId).FirstOrDefaultAsync();
+      var product = await _productRepository.GetByCondition(x => x.Id == basket.ProductId).FirstOrDefaultAsync();
       if (product == null) return null;
       var hasProduct = current.BasketInfo.FirstOrDefault(x => x.ProductId == basket.ProductId);
       if (hasProduct is null)
-      {
-        current.BasketInfo.Add(new BasketInfo { Id = Guid.NewGuid(), ProductId = product.Id, Quantity = basket.Quantity, Total = basket.Quantity * product.Price });
-        current.Total = current.BasketInfo.Sum(x => x.Total);
-      }
+        _repository.AddNewProduct(current.Id, product);
       else
-      {
-        hasProduct.Quantity += 1;
-      }
-      _repository.Update(current);
-      _repository.Save();
-      return current;
+        _repository.AddProduct(current.Id, product.Id, basket.Quantity);
+      return await GetCurrent();
     }
 
     public Task<bool> Delete(Guid id)
@@ -79,7 +66,7 @@ namespace Marketplace.Api.Services
     {
       var basketInfo = await _repository.GetAll().Include(x => x.BasketInfo).FirstOrDefaultAsync();
       var productIds = basketInfo.BasketInfo.Select(x => x.ProductId).ToList();
-      var products = this._productRespository.GetByCondition(x => productIds.Any(p => x.Id == p)).ToList();
+      var products = this._productRepository.GetByCondition(x => productIds.Any(p => x.Id == p)).ToList();
       basketInfo.BasketInfo.ToList().ForEach(x =>
       {
         x.Product = products.FirstOrDefault(p => p.Id == x.ProductId);
@@ -87,5 +74,10 @@ namespace Marketplace.Api.Services
       return basketInfo;
     }
 
+    public bool ClearProduct(Guid basketId, Guid productId)
+    {
+      _repository.ClearProduct(basketId, productId);
+      return true;
+    }
   }
 }
